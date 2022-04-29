@@ -1,7 +1,9 @@
 from contestant import User
 from contestant import Wopr
+from contestant import Contestant
 import time
 from validate_input import get_valid_integer
+from validate_input import get_y_or_n_from_user
 
 class Game():
     def __init__(self) -> None:
@@ -10,6 +12,8 @@ class Game():
         self.total_number_of_rounds = 0
         self.number_of_players = -1
         self.number_of_rounds_to_victory = -1
+        self.player_1 = Contestant()
+        self.player_2 = Contestant()
 
     def run_game(self):
 
@@ -27,12 +31,12 @@ class Game():
             self.determine_number_of_rounds()
             # Step 5: Set up the contestant classes
             self.setup_contestants()
-        #     # Step 6: Play Game
-        #     winner = self.play_rpsls()
-        #     # Step 7: Display Winner
-        #     self.victory_message()
-        #     # Step 8: Play again
-        #     self.play_again()
+            # Step 6: Play Game
+            winner = self.play_rpsls()
+            # Step 7: Display Winner
+            self.victory_message()
+            # Step 8: Play again
+            self.play_again()
         
         # # Step 9: Goodbye
         # self.end_game()
@@ -73,6 +77,7 @@ class Game():
         print('Play continues in a best of format until one player beats the other')
         return
 
+    # Step 3
     def determine_number_of_players(self):
         print('Please enter the number human players')
         print('(0) for no players (computer plays both sides)')
@@ -89,6 +94,7 @@ class Game():
         self.number_of_players =  num
         return
 
+    # Step 4
     def determine_number_of_rounds(self):
         print('How long to you want this game to last?')
         user_message = ('Enter the total number of rounds (must be an ODD number) ')
@@ -97,25 +103,72 @@ class Game():
         self.total_number_of_rounds = number_of_rounds
         return
 
+    # Step 5
     def setup_contestants(self):
         if self.number_of_players == 0:
-            player_1 = Wopr('-1')
-            player_2 = Wopr('-2')
+            self.player_1 = Wopr('-1')
+            self.player_2 = Wopr('-2')
         elif self.number_of_players == 1:
             name_1 = input('Please enter the name of Player #1: ')
-            player_1 = User(name_1)
-            player_2 = Wopr()
+            self.player_1 = User(name_1)
+            self.player_2 = Wopr('')
         else:
             name_1 = input('Please enter the name of Player #1: ')
-            player_1 = User(name_1) 
+            self.player_1 = User(name_1) 
 
             name_2 = input('Please enter the name of Player #2: ')
-            player_2 = User(name_2) 
+            self.player_2 = User(name_2) 
 
-        print(f"It's {player_1.name} vs. {player_2.name} in a best of {self.total_number_of_rounds} round battle of")
+        print(f"It's {self.player_1.name} vs. {self.player_2.name} in a best of {self.total_number_of_rounds} round battle of")
         print('Rock, Paper, Scissors, Lizard, Spock') 
         return   
     
+    # Step 6 --> This is the actual game
+    def play_rpsls(self):
+        while self.player_1.number_of_wins < self.number_of_rounds_to_victory  and self.player_2.number_of_wins < self.number_of_rounds_to_victory:
+            self.round += 1
+            players_keep_selecting = True
+            while players_keep_selecting:
+                gesture_p1 = self.player_1.select_choice()
+                gesture_p2 = self.player_2.select_choice()
+                if gesture_p1.name == gesture_p2.name:
+                    print(f'Both contestants chose {gesture_p1.name}\n Please re-select')
+                else:
+                    players_keep_selecting = False
+
+            p1_win = gesture_p1.determine_winner(gesture_p2)
+            if p1_win:
+                print(f'{self.player_1.name} wins Round {self.round} !!!')
+                self.player_1.number_of_wins += 1
+            else:
+                print(f'{self.player_2.name} wins Round {self.round} !!!')
+                self.player_2.number_of_wins += 1   
+
+    # Setp 7 
+    def victory_message(self):
+        if self.player_1.number_of_wins == self.number_of_rounds_to_victory:
+            print(f'Player {self.player_1.name} won the best of {self.total_number_of_rounds} by a score of {self.player_1.number_of_wins} to {self.player_2.number_of_wins} ')
+            print(f'Congratulations to {self.player_1.name}')
+        else:
+            print(f'Player {self.player_2.name} won the best of {self.total_number_of_rounds} by a score of {self.player_2.number_of_wins} to {self.player_1.number_of_wins} ')
+            print(f'Congratulations to {self.player_2.name}')   
+        return
+
+    # Step 8 
+    def play_again(self):
+        message_to_user = ('Do you want to play this awesome game again? Y or N: ')
+        play_again = get_y_or_n_from_user(message_to_user)
+        if play_again == 'Y':
+            self.keep_playing = True
+            self.round = 0
+            print("Ok... Let's play again!!")
+        else:
+            self.keep_playing = False
+            print('Thank you for playing!')
+
+
+
+
 
         
 
