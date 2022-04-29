@@ -109,7 +109,7 @@ class Spock(Gesture):
         elif opponent_choice.name == 'Paper':
             print('Paper dissolves Spock')
             win_result = False
-        elif opponent_choice.name == 'Spock':
+        elif opponent_choice.name == 'Lizard':
             print('Lizard poisons Spock')
             win_result = False
         else:
