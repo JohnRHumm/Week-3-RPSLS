@@ -38,8 +38,8 @@ class Game():
             # Step 8: Play again
             self.play_again()
         
-        # # Step 9: Goodbye
-        # self.end_game()
+        # Step 9: Goodbye
+        self.end_game()
 
         return
 
@@ -147,10 +147,10 @@ class Game():
     # Setp 7 
     def victory_message(self):
         if self.player_1.number_of_wins == self.number_of_rounds_to_victory:
-            print(f'Player {self.player_1.name} won the best of {self.total_number_of_rounds} by a score of {self.player_1.number_of_wins} to {self.player_2.number_of_wins} ')
+            print(f'{self.player_1.name} won the best of {self.total_number_of_rounds} by a score of {self.player_1.number_of_wins} to {self.player_2.number_of_wins} ')
             print(f'Congratulations to {self.player_1.name}')
         else:
-            print(f'Player {self.player_2.name} won the best of {self.total_number_of_rounds} by a score of {self.player_2.number_of_wins} to {self.player_1.number_of_wins} ')
+            print(f'{self.player_2.name} won the best of {self.total_number_of_rounds} by a score of {self.player_2.number_of_wins} to {self.player_1.number_of_wins} ')
             print(f'Congratulations to {self.player_2.name}')   
         return
 
@@ -162,10 +162,15 @@ class Game():
             self.keep_playing = True
             self.round = 0
             print("Ok... Let's play again!!")
+            print("-------------------------------")
         else:
             self.keep_playing = False
-            print('Thank you for playing!')
 
+           
+    # Step 9
+    def end_game(self):
+        print('Thank you for playing Rock, Scissors, Paper, Lizard, Rock!')
+        return
 
 
 
