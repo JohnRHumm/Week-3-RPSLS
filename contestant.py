@@ -1,4 +1,3 @@
-from re import S
 from validate_input import get_valid_integer
 from gesture import Rock
 from gesture import Paper

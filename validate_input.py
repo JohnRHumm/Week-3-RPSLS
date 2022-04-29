@@ -8,7 +8,7 @@ def get_valid_integer(message,number_range,user_picks_option):
         while waiting_for_valid_response:
             user_input = int(input(message))
             if user_input not in number_range:
-                print(f'Please enter an integer 1-{number_range[-1]}')
+                print(f'Please enter an integer {number_range[1]}-{number_range[-1]}')
             else:
                 waiting_for_valid_response = False
     return user_input
