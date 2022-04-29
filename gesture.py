@@ -38,13 +38,13 @@ class Paper(Gesture):
             print('Paper covers Rock')
             win_result = True
         elif opponent_choice.name == 'Spock':
-            print('Paper dissolves Spock')
+            print('Paper disproves Spock')
             win_result = True
         elif opponent_choice.name == 'Scissors':
             print('Scissors cuts Paper')
             win_result = False
         elif opponent_choice.name == 'Lizard':
-            print("Lizard eats Paper")
+            print('Lizard eats Paper')
             win_result = False
         else:
             win_result = ''
@@ -107,7 +107,7 @@ class Spock(Gesture):
             print('Spock smashes Scissors')
             win_result = True
         elif opponent_choice.name == 'Paper':
-            print('Paper dissolves Spock')
+            print('Paper disproves Spock')
             win_result = False
         elif opponent_choice.name == 'Lizard':
             print('Lizard poisons Spock')
