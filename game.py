@@ -14,6 +14,7 @@ class Game():
         self.number_of_rounds_to_victory = -1
         self.player_1 = Contestant()
         self.player_2 = Contestant()
+        self.number_of_ties = 0
 
     def run_game(self):
 
@@ -122,9 +123,11 @@ class Game():
         else:
             name_1 = input('Please enter the name of Player #1: ')
             self.player_1 = User(name_1) 
+            self.player_1.show_choice = False
 
             name_2 = input('Please enter the name of Player #2: ')
             self.player_2 = User(name_2) 
+            self.player_2.show_choice = False
 
         print(f"It's {self.player_1.name} vs. {self.player_2.name} in a best of {self.total_number_of_rounds} round battle of")
         print('Rock, Paper, Scissors, Lizard, Spock\n')
@@ -145,6 +148,7 @@ class Game():
                 time.sleep(1)
                 if gesture_p1.name == gesture_p2.name:
                     print(f'Both contestants chose {gesture_p1.name}\n Please re-select')
+                    self.number_of_ties += 1
                     time.sleep(2)
                 else:
                     players_keep_selecting = False
@@ -154,21 +158,46 @@ class Game():
             if p1_win:
                 print(f'\033[1;37;41m {self.player_1.name} wins Round {self.round} !!! \033[0m\n')
                 self.player_1.number_of_wins += 1
+                self.player_1.round_victory_list.append(self.round)
             else:
                 print(f'\033[1;30;43m {self.player_2.name} wins Round {self.round} !!! \033[0m\n')
-                self.player_2.number_of_wins += 1   
+                self.player_2.number_of_wins += 1
+                self.player_2.round_victory_list.append(self.round)   
             time.sleep(2)
 
     # Setp 7
     def victory_message(self):
-        print(f'\033[1;34;43m The game is over\033[0m')
+        print(f'\033[1;37;44m  The game is over \033[0m\n')
         if self.player_1.number_of_wins == self.number_of_rounds_to_victory:
             print(f'{self.player_1.name} won the best of {self.total_number_of_rounds} by a score of {self.player_1.number_of_wins} to {self.player_2.number_of_wins} ')
-            print(f'Congratulations to {self.player_1.name}')
+            print(f'\033[1;37;41m Congratulations to {self.player_1.name} \033[0m')
         else:
             print(f'{self.player_2.name} won the best of {self.total_number_of_rounds} by a score of {self.player_2.number_of_wins} to {self.player_1.number_of_wins} ')
-            print(f'Congratulations to {self.player_2.name}')   
+            print(f'\033[1;30;43m Congratulations to {self.player_2.name} \033[0m')   
+        time.sleep(2) 
+        print('----Game Summary Statistics----')
+        print(f'{self.player_1.name} won rounds')
+        time.sleep(2)
+        print(*self.player_1.round_victory_list,sep =',')
+        print(f'{self.player_2.name} won rounds')
+        time.sleep(2)
+        print(*self.player_2.round_victory_list,sep =',')
+        time.sleep(2)
+        print(f'There were {self.number_of_ties} ties\n')
+        time.sleep(2)
+        print(f'\033[1;37;41m {self.player_1.name} Selection Summary \033[0m')
+        self.player_1.summary_of_gesture_choices()
+        print('')
+        time.sleep(3)
+        print(f'\033[1;30;43m {self.player_2.name} Selection Summary \033[0m')
+        self.player_2.summary_of_gesture_choices()
+        time.sleep(3)
+
+
+        
+
         return
+
 
     # Step 8 
     def play_again(self):
@@ -177,6 +206,7 @@ class Game():
         if play_again == 'Y':
             self.keep_playing = True
             self.round = 0
+            self.number_of_ties = 0
             print("Ok... Let's play again!!")
             print("-------------------------------\n")
         else:
@@ -185,7 +215,7 @@ class Game():
            
     # Step 9
     def end_game(self):
-        print('Thank you for playing Rock, Scissors, Paper, Lizard, Rock!')
+        print('Thank you for playing Rock, Scissors, Paper, Lizard, Spock!')
         return
 
 

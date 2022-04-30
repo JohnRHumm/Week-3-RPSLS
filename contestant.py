@@ -14,9 +14,16 @@ class Contestant:
         lizard = Lizard()
         spock = Spock()
         self.gesture_list = [rock,paper,scissors,lizard,spock]
+        self.round_victory_list = []
+        self.show_choice = True
     
     def select_choice(self):
         pass
+
+    def summary_of_gesture_choices(self):
+        for gesture in self.gesture_list:
+            print(f'{gesture.name} --> {gesture.number_of_times_selected} times')
+
 
 
 class User(Contestant):
@@ -34,7 +41,9 @@ class User(Contestant):
         user_choice = get_valid_integer(message_to_user,range(1,index+1),True)
         selected_gesture_index = user_choice - 1
         selected_gesture = self.gesture_list[selected_gesture_index]
-        print(f'{self.name} has selected {self.gesture_list[selected_gesture_index].name}')
+        self.gesture_list[selected_gesture_index].number_of_times_selected += 1
+        if self.show_choice:
+            print(f'{self.name} has selected {self.gesture_list[selected_gesture_index].name}')
         return selected_gesture
 
 class Wopr(Contestant):
@@ -49,6 +58,7 @@ class Wopr(Contestant):
         user_choice = get_valid_integer('',range(1,index+1),False)
         selected_gesture_index = user_choice - 1
         selected_gesture = self.gesture_list[selected_gesture_index]
+        self.gesture_list[selected_gesture_index].number_of_times_selected += 1
         print(f'{self.name} has selected {self.gesture_list[selected_gesture_index].name}')
         return selected_gesture
 

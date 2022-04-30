@@ -1,6 +1,8 @@
 class Gesture():
     def __init__(self) -> None:
         self.name =''
+        self.number_of_times_selected = 0
+        
         
     def determine_winner(self,opponent_choice):
         pass
