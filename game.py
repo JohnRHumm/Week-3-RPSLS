@@ -46,6 +46,7 @@ class Game():
     # Step 1
     def user_greeting(self):
         print('Welcome to Rock, Paper, Scissors, Lizard, Spock. An odd twist on a classic game')
+        time.sleep(2)
         return
 
     # Step 2
@@ -75,6 +76,8 @@ class Game():
         print('SPOCK vaporizes ROCK')
         time.sleep(1)
         print('Play continues in a best of format until one player beats the other')
+        print('---------------------\n')
+        time.sleep(1)
         return
 
     # Step 3
@@ -84,23 +87,27 @@ class Game():
         print('(1) for 1 human player versus the computer')
         print('(2) for human player versus human player')
         user_message = 'Enter a 0,1,or 2: '
+        time.sleep(2)
         num = get_valid_integer(user_message,range(0,3),True)
         if num == 0:
-            print('Computer will play both sides. Enjoy this exciting game!')
+            print('Computer will play both sides. Enjoy this exciting game!\n')
         elif num == 1:
-            print("It's you versus the computer. Good Luck!!")
+            print("It's you versus the computer. Good Luck!!\n")
         else:
-            print("Congratulations! You have a friend! You may not have one after this game!!")
+            print("Congratulations! You have a friend! You may not have one after this game!!\n")
+        time.sleep(2)
         self.number_of_players =  num
         return
 
     # Step 4
     def determine_number_of_rounds(self):
         print('How long to you want this game to last?')
-        user_message = ('Enter the total number of rounds (must be an ODD number) ')
+        user_message = ('Enter the total number of rounds (must be an ODD number 1-999) ')
         number_of_rounds = get_valid_integer(user_message,range(1,1000,2),True)
-        self.number_of_rounds_to_victory = round(number_of_rounds/2)
+        self.number_of_rounds_to_victory = int((number_of_rounds + 1)/2)
         self.total_number_of_rounds = number_of_rounds
+        print(f'The first contestant to win {self.number_of_rounds_to_victory} rounds wins the game!\n')
+        time.sleep(2)
         return
 
     # Step 5
@@ -120,32 +127,41 @@ class Game():
             self.player_2 = User(name_2) 
 
         print(f"It's {self.player_1.name} vs. {self.player_2.name} in a best of {self.total_number_of_rounds} round battle of")
-        print('Rock, Paper, Scissors, Lizard, Spock') 
+        print('Rock, Paper, Scissors, Lizard, Spock\n')
+        time.sleep(2) 
         return   
     
     # Step 6 --> This is the actual game
     def play_rpsls(self):
         while self.player_1.number_of_wins < self.number_of_rounds_to_victory  and self.player_2.number_of_wins < self.number_of_rounds_to_victory:
             self.round += 1
+            print(f'\033[1;37;44m Round {self.round} Summary: {self.player_1.name} - {self.player_1.number_of_wins} wins vs. {self.player_2.name} - {self.player_2.number_of_wins} wins \033[0m')
+            time.sleep(1)
             players_keep_selecting = True
             while players_keep_selecting:
                 gesture_p1 = self.player_1.select_choice()
+                time.sleep(1)
                 gesture_p2 = self.player_2.select_choice()
+                time.sleep(1)
                 if gesture_p1.name == gesture_p2.name:
                     print(f'Both contestants chose {gesture_p1.name}\n Please re-select')
+                    time.sleep(2)
                 else:
                     players_keep_selecting = False
 
             p1_win = gesture_p1.determine_winner(gesture_p2)
+            time.sleep(2)
             if p1_win:
-                print(f'{self.player_1.name} wins Round {self.round} !!!')
+                print(f'\033[1;37;41m {self.player_1.name} wins Round {self.round} !!! \033[0m\n')
                 self.player_1.number_of_wins += 1
             else:
-                print(f'{self.player_2.name} wins Round {self.round} !!!')
+                print(f'\033[1;30;43m {self.player_2.name} wins Round {self.round} !!! \033[0m\n')
                 self.player_2.number_of_wins += 1   
+            time.sleep(2)
 
-    # Setp 7 
+    # Setp 7
     def victory_message(self):
+        print(f'\033[1;34;43m The game is over\033[0m')
         if self.player_1.number_of_wins == self.number_of_rounds_to_victory:
             print(f'{self.player_1.name} won the best of {self.total_number_of_rounds} by a score of {self.player_1.number_of_wins} to {self.player_2.number_of_wins} ')
             print(f'Congratulations to {self.player_1.name}')
@@ -162,7 +178,7 @@ class Game():
             self.keep_playing = True
             self.round = 0
             print("Ok... Let's play again!!")
-            print("-------------------------------")
+            print("-------------------------------\n")
         else:
             self.keep_playing = False
 
