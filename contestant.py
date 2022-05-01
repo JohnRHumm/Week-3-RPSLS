@@ -15,15 +15,22 @@ class Contestant:
         spock = Spock()
         self.gesture_list = [rock,paper,scissors,lizard,spock]
         self.round_victory_list = []
+        self.win_count_by_round = [0]
         self.show_choice = True
     
     def select_choice(self):
         pass
 
     def summary_of_gesture_choices(self):
+        summary_list = []
+        gesture_list = []
+        number_list = []
         for gesture in self.gesture_list:
             print(f'{gesture.name} --> {gesture.number_of_times_selected} times')
-
+            gesture_list.append(gesture.name)
+            number_list.append(gesture.number_of_times_selected)
+        summary_list = (gesture_list,number_list)
+        return summary_list
 
 
 class User(Contestant):

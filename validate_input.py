@@ -6,11 +6,15 @@ def get_valid_integer(message,number_range,user_picks_option):
     else:
         waiting_for_valid_response = True
         while waiting_for_valid_response:
-            user_input = int(input(message))
-            if user_input not in number_range:
-                print(f'Please enter an integer {number_range[1]}-{number_range[-1]}')
+            try:
+                user_input = int(input(message))
+            except ValueError:
+                print(f'Please enter an integer {number_range[0]}-{number_range[-1]}')
             else:
-                waiting_for_valid_response = False
+                if user_input not in number_range:
+                    print(f'Please enter an integer {number_range[0]}-{number_range[-1]}')
+                else:
+                    waiting_for_valid_response = False
     return user_input
 
 def get_y_or_n_from_user(input_message):

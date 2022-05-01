@@ -4,7 +4,20 @@ from contestant import Contestant
 import time
 from validate_input import get_valid_integer
 from validate_input import get_y_or_n_from_user
-
+try:
+    import matplotlib.pyplot as plt
+    import_matplotlib = True
+except:
+    import_matplotlib = False
+try:
+    import numpy as np
+    import_numpy = True
+except:
+    import_numpy = False
+if import_matplotlib and import_numpy:
+    make_plots = True
+else:
+    make_plots = False
 class Game():
     def __init__(self) -> None:
         self.round = 0
@@ -36,10 +49,12 @@ class Game():
             winner = self.play_rpsls()
             # Step 7: Display Winner
             self.victory_message()
-            # Step 8: Play again
+            # Step 8: Show Game Statistics
+            self.show_statistics()
+            # Step 9: Play again
             self.play_again()
         
-        # Step 9: Goodbye
+        # Step 10: Goodbye
         self.end_game()
 
         return
@@ -102,9 +117,9 @@ class Game():
 
     # Step 4
     def determine_number_of_rounds(self):
-        print('How long to you want this game to last?')
-        user_message = ('Enter the total number of rounds (must be an ODD number 1-999) ')
-        number_of_rounds = get_valid_integer(user_message,range(1,1000,2),True)
+        print('How long do you want this game to last?')
+        user_message = ('Enter the total number of rounds (must be an ODD number 1-5001) ')
+        number_of_rounds = get_valid_integer(user_message,range(1,5002,2),True)
         self.number_of_rounds_to_victory = int((number_of_rounds + 1)/2)
         self.total_number_of_rounds = number_of_rounds
         print(f'The first contestant to win {self.number_of_rounds_to_victory} rounds wins the game!\n')
@@ -114,8 +129,8 @@ class Game():
     # Step 5
     def setup_contestants(self):
         if self.number_of_players == 0:
-            self.player_1 = Wopr('-1')
-            self.player_2 = Wopr('-2')
+            self.player_1 = Wopr(' 1.0')
+            self.player_2 = Wopr(' 2.0')
         elif self.number_of_players == 1:
             name_1 = input('Please enter the name of Player #1: ')
             self.player_1 = User(name_1)
@@ -162,7 +177,9 @@ class Game():
             else:
                 print(f'\033[1;30;43m {self.player_2.name} wins Round {self.round} !!! \033[0m\n')
                 self.player_2.number_of_wins += 1
-                self.player_2.round_victory_list.append(self.round)   
+                self.player_2.round_victory_list.append(self.round) 
+            self.player_1.win_count_by_round.append(self.player_1.number_of_wins)
+            self.player_2.win_count_by_round.append(self.player_2.number_of_wins)
             time.sleep(2)
 
     # Setp 7
@@ -175,6 +192,10 @@ class Game():
             print(f'{self.player_2.name} won the best of {self.total_number_of_rounds} by a score of {self.player_2.number_of_wins} to {self.player_1.number_of_wins} ')
             print(f'\033[1;30;43m Congratulations to {self.player_2.name} \033[0m')   
         time.sleep(2) 
+        return
+
+    # Step 8
+    def show_statistics(self):
         print('----Game Summary Statistics----')
         print(f'{self.player_1.name} won rounds')
         time.sleep(2)
@@ -186,20 +207,38 @@ class Game():
         print(f'There were {self.number_of_ties} ties\n')
         time.sleep(2)
         print(f'\033[1;37;41m {self.player_1.name} Selection Summary \033[0m')
-        self.player_1.summary_of_gesture_choices()
+        player1_gesture_summary = self.player_1.summary_of_gesture_choices()
+        
         print('')
         time.sleep(3)
         print(f'\033[1;30;43m {self.player_2.name} Selection Summary \033[0m')
-        self.player_2.summary_of_gesture_choices()
-        time.sleep(3)
+        player2_gesture_summary = self.player_2.summary_of_gesture_choices()
+        if make_plots:
+            x_axis = np.arange(len(player1_gesture_summary[0]))
+            plt.bar(x_axis - 0.2,player1_gesture_summary[1],width = 0.4,label = self.player_1.name)
+            plt.bar(x_axis + 0.2,player2_gesture_summary[1],width = 0.4,label = self.player_2.name)
+            plt.xticks(x_axis,player1_gesture_summary[0])
+            plt.ylabel('Number of times selected')
+            plt.title('Selection Summary')
+            plt.legend()
+            plt.show()
+
+            fig = plt.figure()
+            ax = plt.axes()
+            ax.plot(range(0,self.round+1),self.player_1.win_count_by_round,label = self.player_1.name)
+            ax.plot(range(0,self.round+1),self.player_2.win_count_by_round,label = self.player_2.name)
+            plt.title('Win total by round')
+            plt.xlabel('Round')
+            plt.ylabel('Number of wins')
+            plt.legend()
+            plt.grid()
+            plt.show()
 
 
-        
-
+            # time.sleep(3)
         return
-
-
-    # Step 8 
+    
+    # Step 9 
     def play_again(self):
         message_to_user = ('Do you want to play this awesome game again? Y or N: ')
         play_again = get_y_or_n_from_user(message_to_user)
@@ -213,7 +252,7 @@ class Game():
             self.keep_playing = False
 
            
-    # Step 9
+    # Step 10
     def end_game(self):
         print('Thank you for playing Rock, Scissors, Paper, Lizard, Spock!')
         return
