@@ -194,7 +194,7 @@ class Game():
         time.sleep(2) 
         return
 
-    # Step 8
+    # Step 8 First try at plotting graphs in python need numpy and matplotlib
     def show_statistics(self):
         print('----Game Summary Statistics----')
         print(f'{self.player_1.name} won rounds')
@@ -222,6 +222,7 @@ class Game():
             plt.title('Selection Summary')
             plt.legend()
             plt.show()
+            print('Close bar chart to continue')
 
             fig = plt.figure()
             ax = plt.axes()
@@ -233,9 +234,11 @@ class Game():
             plt.legend()
             plt.grid()
             plt.show()
+            print('Close graph to continue')
 
-
-            # time.sleep(3)
+        else:
+            print('Install numpy and matplotlib libraries to show graphs')
+            
         return
     
     # Step 9 
