@@ -214,6 +214,7 @@ class Game():
         print(f'\033[1;30;43m {self.player_2.name} Selection Summary \033[0m')
         player2_gesture_summary = self.player_2.summary_of_gesture_choices()
         if make_plots:
+            print('Close bar chart to continue')
             x_axis = np.arange(len(player1_gesture_summary[0]))
             plt.bar(x_axis - 0.2,player1_gesture_summary[1],width = 0.4,label = self.player_1.name)
             plt.bar(x_axis + 0.2,player2_gesture_summary[1],width = 0.4,label = self.player_2.name)
@@ -222,8 +223,8 @@ class Game():
             plt.title('Selection Summary')
             plt.legend()
             plt.show()
-            print('Close bar chart to continue')
-
+           
+            print('Close graph to continue')
             fig = plt.figure()
             ax = plt.axes()
             ax.plot(range(0,self.round+1),self.player_1.win_count_by_round,label = self.player_1.name)
@@ -234,7 +235,7 @@ class Game():
             plt.legend()
             plt.grid()
             plt.show()
-            print('Close graph to continue')
+           
 
         else:
             print('Install numpy and matplotlib libraries to show graphs')
